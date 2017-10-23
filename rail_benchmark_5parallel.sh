@@ -19,14 +19,26 @@ mkdir $BASEDIR/run_logs
 # loop over all core counts
 for CORES in $(echo $PROCS | tr "," "\n")
 do
-	echo Running Rail with $CORES cores
+	echo Running 5 Rail instances with $CORES cores
 
 	# start recording with top in background
-	top -d 2 -b|grep --line-buffered "load average" -A 12 > $BASEDIR/top_logs/top_core_$CORES.log &
+	top -d 2 -b > $BASEDIR/top_logs/top_core_$CORES.log &
 	TOPPID=$!
 
-	# start rail
-	rail-rna go local -x $BT1 $BT2 -m $MANIFEST -p $CORES --scratch $INTERM
+	# start 5 rail processes and send to background
+	RAIL_PIDS = () # keep track of all rail pids
+	for i in {1..5}
+	do
+		rail-rna go local -x $BT1 $BT2 -m $MANIFEST -p $CORES --scratch $INTERM &
+		RAIL_PIDS+=($!) # keep track of all rail pids
+	done
+
+	# wait for all rail instances to finish
+	for rail_pid in ${RAIL_PIDS[@]}
+	do
+		wait $rail_pid
+	done
+
 
 	# kill background top
 	kill $TOPPID
