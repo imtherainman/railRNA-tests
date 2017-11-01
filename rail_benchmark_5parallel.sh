@@ -43,7 +43,7 @@ do
 	# kill background top
 	kill $TOPPID
 
-	cp $BASEDIR/rail-rna_logs/*.log $BASEDIR/run_logs/$CORES.log
+	cp $BASEDIR/rail-rna_logs/*.log $BASEDIR/run_logs/$CORES/
 	rm -rf $BASEDIR/rail-rna_logs/
 	rm -rf $BASEDIR/rail-rna_out/
 done
