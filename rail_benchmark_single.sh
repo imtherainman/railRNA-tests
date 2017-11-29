@@ -13,8 +13,8 @@ do
 done
 
 BASEDIR=$(dirname "$0")
-mkdir $BASEDIR/top_logs
-mkdir $BASEDIR/run_logs
+mkdir $BASEDIR/top_logs_single
+mkdir $BASEDIR/run_logs_single
 
 # loop over all core counts
 for CORES in $(echo $PROCS | tr "," "\n")
@@ -22,7 +22,7 @@ do
 	echo Running Rail with $CORES cores
 
 	# start recording with top in background
-	top -d 2 -b > $BASEDIR/top_logs/top_core_$CORES.log &
+	top -d 2 -b > $BASEDIR/top_logs_single/top_core_$CORES.log &
 	TOPPID=$!
 
 	# start rail
@@ -31,7 +31,7 @@ do
 	# kill background top
 	kill $TOPPID
 
-	cp $BASEDIR/rail-rna_logs/*.log $BASEDIR/run_logs/$CORES.log
+	cp $BASEDIR/rail-rna_logs/*.log $BASEDIR/run_logs_single/$CORES.log
 	rm -rf $BASEDIR/rail-rna_logs/
 	rm -rf $BASEDIR/rail-rna_out/
 done
