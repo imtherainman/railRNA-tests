@@ -13,7 +13,9 @@ do
 	esac
 done
 
-BASEDIR=$(dirname "$0")
+# BASEDIR=$(dirname "$0")
+BASEDIR = /home1/05096/rcao/testing/parallel_logs/$NUMRAILS_rail
+mkdir $BASEDIR
 mkdir $BASEDIR/top_logs_parallel
 mkdir $BASEDIR/tmp_usage_logs_parallel
 
@@ -34,7 +36,7 @@ do
 	RAIL_PIDS=() # keep track of all rail pids
 	for i in {1..NUMRAILS}
 	do
-		rail-rna go local -x $BT1 $BT2 -m $MANIFEST -p $CORES --scratch $INTERM --output ./rail-rna_out_$i --log ./rail-rna_logs_$i &
+		rail-rna go local -x $BT1 $BT2 -m $MANIFEST -p $CORES --scratch $INTERM --output $BASEDIR/rail-rna_out_$i --log ./rail-rna_logs_$i &
 		RAIL_PIDS+=($!) # keep track of all rail pids
 	done
 
