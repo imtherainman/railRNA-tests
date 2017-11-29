@@ -1,6 +1,6 @@
 #!/bin/bash
 
-while getopts p:d:o:t:m: option
+while getopts p:d:o:t:m:n: option
 do
 	case "${option}"
 	in
@@ -9,18 +9,18 @@ do
 	o) BT1=${OPTARG};;
 	t) BT2=${OPTARG};;
 	m) MANIFEST=${OPTARG};;
+	n) NUMRAILS=${OPTARG};;
 	esac
 done
 
 BASEDIR=$(dirname "$0")
 mkdir $BASEDIR/top_logs_parallel
 mkdir $BASEDIR/tmp_usage_logs_parallel
-#mkdir $BASEDIR/run_logs_parallel
 
 # loop over all core counts
 for CORES in $(echo $PROCS | tr "," "\n")
 do
-	echo Running 5 Rail instances with $CORES cores
+	echo Running $NUMRAILS Rail instances with $CORES cores
 
 	# start recording with top in background
 	top -d 2 -b > $BASEDIR/top_logs_parallel/top_core_$CORES.log &
@@ -30,9 +30,9 @@ do
 	while true ; do df /tmp >> $BASEDIR/tmp_usage_logs_parallel/tmp_usage_$CORES.log ; sleep 1 ; done &
 	DFTMPPID=$!
 
-	# start 5 rail processes and send to background
+	# start NUMRAILS rail processes and send to background
 	RAIL_PIDS=() # keep track of all rail pids
-	for i in {1..5}
+	for i in {1..NUMRAILS}
 	do
 		rail-rna go local -x $BT1 $BT2 -m $MANIFEST -p $CORES --scratch $INTERM --output ./rail-rna_out_$i --log ./rail-rna_logs_$i &
 		RAIL_PIDS+=($!) # keep track of all rail pids
