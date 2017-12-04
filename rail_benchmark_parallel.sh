@@ -11,6 +11,7 @@ do
 	m) MANIFEST=${OPTARG};;
 	n) NUMRAILS=${OPTARG};;
 	esac
+done
 
 echo "hello"
 exit 0
@@ -37,7 +38,7 @@ do
 	RAIL_PIDS=() # keep track of all rail pids
 	for i in {1..$NUMRAILS}
 	do
-		rail-rna go local -x $BT1 $BT2 -m $MANIFEST -p $CORES --scratch $INTERM --output $BASEDIR/rail-rna_out_$i --log $BASEDIR/rail-rna_logs_$i &
+		# rail-rna go local -x $BT1 $BT2 -m $MANIFEST -p $CORES --scratch $INTERM --output $BASEDIR/rail-rna_out_$i --log $BASEDIR/rail-rna_logs_$i &
 		RAIL_PIDS+=($!) # keep track of all rail pids
 	done
 
