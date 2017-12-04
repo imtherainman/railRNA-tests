@@ -14,7 +14,7 @@ do
 done
 
 # BASEDIR=$(dirname "$0")
-BASEDIR = /home1/05096/rcao/testing/parallel_logs/$NUMRAILS_rail
+BASEDIR = /home1/05096/rcao/testing/parallel_logs/logs_$NUMRAILS_rail
 mkdir $BASEDIR
 mkdir $BASEDIR/top_logs_parallel
 mkdir $BASEDIR/tmp_usage_logs_parallel
