@@ -13,9 +13,6 @@ do
 	esac
 done
 
-echo "hello"
-exit 0
-
 BASEDIR=/home1/05096/rcao/testing/parallel_logs/logs_${NUMRAILS}_rail
 mkdir $BASEDIR
 mkdir $BASEDIR/top_logs_parallel
@@ -36,9 +33,10 @@ do
 
 	# start NUMRAILS rail processes and send to background
 	RAIL_PIDS=() # keep track of all rail pids
-	for i in {1..$NUMRAILS}
+	for (( i=1; i<=$NUMRAILS; i++ ))
 	do
-		# rail-rna go local -x $BT1 $BT2 -m $MANIFEST -p $CORES --scratch $INTERM --output $BASEDIR/rail-rna_out_$i --log $BASEDIR/rail-rna_logs_$i &
+		echo "Launching rail instance number ${i}"
+		rail-rna go local -x $BT1 $BT2 -m $MANIFEST -p $CORES --scratch $INTERM --output $BASEDIR/rail-rna_out_$i --log $BASEDIR/rail-rna_logs_$i &
 		RAIL_PIDS+=($!) # keep track of all rail pids
 	done
 

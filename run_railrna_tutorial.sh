@@ -1,8 +1,16 @@
 #!/bin/bash
 
-n_rails=10
+START=15
+END=20
 BASEDIR=$(dirname "$0")
-time sh $BASEDIR/rail_benchmark_parallel.sh -o /home1/05096/rcao/testing/Drosophila_melanogaster/UCSC/dm3/Sequence/BowtieIndex/genome -t /home1/05096/rcao/testing/Drosophila_melanogaster/UCSC/dm3/Sequence/Bowtie2Index/genome -m https://raw.githubusercontent.com/nellore/rail/master/ex/dm3_example.manifest -p 16 -d /tmp -n $n_rails
+
+for (( n_rails=$START; n_rails<=$END; n_rails+=5 ))
+do
+	echo "${n_rails} instances" >> /home1/05096/rcao/testing/runtimes.txt
+	{ time sh $BASEDIR/rail_benchmark_parallel.sh -o /home1/05096/rcao/testing/Drosophila_melanogaster/UCSC/dm3/Sequence/BowtieIndex/genome -t /home1/05096/rcao/testing/Drosophila_melanogaster/UCSC/dm3/Sequence/Bowtie2Index/genome -m https://raw.githubusercontent.com/nellore/rail/master/ex/dm3_example.manifest -p 16 -d /tmp -n $n_rails 2> rail.stderr ; } 2>> /home1/05096/rcao/testing/runtimes.txt
+	rm -rf /home1/05096/rcao/testing/parallel_logs/logs_*_rail/*out*/
+done
+
 
 
 #rail-rna go local -x /home1/05096/rcao/testing/Drosophila_melanogaster/UCSC/dm3/Sequence/BowtieIndex/genome /home1/05096/rcao/testing/Drosophila_melanogaster/UCSC/dm3/Sequence/Bowtie2Index/genome -m https://raw.githubusercontent.com/nellore/rail/master/ex/dm3_example.manifest -p 16
